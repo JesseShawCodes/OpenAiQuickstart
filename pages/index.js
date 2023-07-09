@@ -27,6 +27,7 @@ export default function Home() {
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
+      console.log("ASFJL")
       alert(error.message);
     }
   }
