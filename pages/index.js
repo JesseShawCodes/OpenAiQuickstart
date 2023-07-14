@@ -1,9 +1,11 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
+import { FaMusic } from "react-icons/fa";
+import { IconContext } from "react-icons";
 
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
+  const [artistInput, setArtistInput] = useState("");
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
@@ -14,20 +16,20 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ artist: artistInput }),
       });
 
       const data = await response.json();
+      console.log(data)
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
       setResult(data.result);
-      setAnimalInput("");
+      setArtistInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
-      console.log("ASFJL")
       alert(error.message);
     }
   }
@@ -40,17 +42,19 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <IconContext.Provider value= { {style: {'fontSize': '52px' }}} >
+        <FaMusic/>
+        </IconContext.Provider>
+        <h3>What is your most popluar song?</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
+            name="artist"
+            placeholder="Enter an artist"
+            value={artistInput}
+            onChange={(e) => setArtistInput(e.target.value)}
           />
-          <input type="submit" value="Generate names" />
+          <input type="submit" value="Get Most Popular Song" />
         </form>
         <div className={styles.result}>{result}</div>
       </main>
